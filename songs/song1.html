@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<link rel="icon" href="../assets/nslogo.ico" type="image/x-icon"/>
+
+	<title>NS_2018</title>
+
+  <style>
+
+  body { padding: 20px; margin: 0; } 
+
+  html *
+		{
+		   font-size: 1em;
+		   color: white;
+		   font-family: Arial;
+		}
+
+  li { padding: 20px; }
+
+  .ui {
+  	/*outline: 1px solid white;*/
+  	background-color: black;
+  	color: white;
+  	padding: 5px;
+  	padding-left: 50px;
+  	padding-right: 50px;
+  	margin: 10px;
+ 	position: relative;
+  	left: 35%;
+  }
+  #objectContainer {
+  	outline: 1px solid white;
+  	padding: 5px;
+  }
+  .objects {
+	/*outline:1px solid red;*/
+  }
+  #object1 {
+  	margin-left: 50px;
+  	margin-right: 50px;
+  }
+
+
+  </style> 
+
+</head>
+<body style="text-align:center; background-color:black">
+ 
+ <!--VIDEO HTML--> 
+
+ 	<div id="objectContainer">
+
+		<video id="video1" width="640" height="480" autoplay loop style="display: none">
+	        <source src="../assets/videos/moon.mov" type="video/mp4">
+	    </video>
+
+	    <video id="video2" width="640" height="480" autoplay loop style="display: none">
+	        <source src="../assets/videos/mono.mov" type="video/mp4">
+	    </video>
+			
+		<canvas class="objects" id="object0" width="300" height="300"></canvas>
+		<canvas class="objects" id="object1" width="300" height="300"></canvas>
+		<canvas class="objects" id="object2" width="300" height="300"></canvas>
+
+	</div>
+
+
+
+	<!--<canvas id="main" width="1024" height="720" style="display: none"></canvas>-->
+	<script src="../lib/seriously.js"></script>
+
+    <script src="../lib/effects/seriously.blur.js"></script>
+    <script src="../lib/effects/seriously.directionblur.js"></script>
+	<script src="../lib/effects/seriously.dither.js"></script>
+	<script src="../lib/effects/seriously.exposure.js"></script>
+	<script src="../lib/effects/seriously.fader.js"></script>
+	<script src="../lib/effects/seriously.freeze.js"></script>
+	<script src="../lib/effects/seriously.fxaa.js"></script>
+	<script src="../lib/effects/seriously.lumakey.js"></script>
+	<script src="../lib/effects/seriously.mirror.js"></script>
+	<script src="../lib/effects/seriously.noise.js"></script>
+    <script src="../lib/effects/seriously.ripple.js"></script>
+	<script src="../lib/effects/seriously.tvglitch.js"></script>
+
+
+ <!--AUDIO HTML--> 
+
+	<div class="ui" id="multislider"></div>
+	<div class="ui" id="startbutton"></div>
+	<div class="ui" id="slider"><div>
+
+	<!-- Load JS lib -->
+	<!--<script language="javascript" type="text/javascript" src="../lib/Tone.min.js"></script>-->
+	<script language="javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tone/13.0.2/Tone.min.js"></script>
+	
+	<script language="javascript" type="text/javascript" src="../lib/NexusUI.min.js"></script>
+	<script language="javascript" type="text/javascript" src="../scripts/toneTrack.js"></script>
+	<script language="javascript" type="text/javascript" src="../scripts/seriouslyVid.js"></script>
+  	<script language="javascript" type="text/javascript">
+
+  	//VIDEO//
+
+  	var seriously;
+  	var source = [];
+
+
+	//GLOBAL//
+
+	const totalTracks = 8;
+	var songTempo = 160; //IMPORTANT: set to same as exported clips
+	
+	//PLAYERS + EFFECTS//
+
+	var tracks = [];
+	var reverb, delay;
+
+	//UI//
+	
+	var multislider;
+	var startbutton;
+	var slider;
+
+	//LOGIC//
+
+	var loop;
+	var control = [];
+
+	function param(){   
+					this.db = 0;
+					this.pan = 0.0;
+					this.freq = 5000;
+					this.res = 0.5;    
+					this.clipIndex = []; 
+					this.clipBeat  = []; }
+
+
+
+	window.onload = function() {
+
+		//VIDEO//
+
+		seriously = new Seriously();
+		source.push(new SeriouslySource());
+		source.push(new SeriouslySource());
+		source.push(new SeriouslySource());
+
+		for (var i = 0; i < source.length; i++) {
+			source[i].addEffect('exposure'); //fx index 0
+			source[i].addEffect('mirror'); // fx index 1
+			source[i].addEffect('tvglitch'); //fx index 2
+		}
+
+		for (var j = 0; j < source.length; j++) {
+			let index = j;
+			let vIndex = 1;
+			
+			if(index == 1) {
+				
+				vIndex = 2;
+			}
+			source[index].init('#object' + index, '#video' + vIndex);
+		}
+		
+		seriously.go();
+
+		// AUDIO //
+		let song = 'song1';
+		tracks.push(new ToneTrack(2, song + '/drum/', '1m'));
+		tracks.push(new ToneTrack(1, song + '/bass/', '1m'));
+		tracks.push(new ToneTrack(1, song + '/pads/', '16n'));
+
+		reverb = new Tone.Freeverb(0.3, 5000).receive("reverb").toMaster();
+		delay = new Tone.FeedbackDelay("16n",0.8).receive("delay").toMaster();
+ 		
+ 	//  	tracks[1].connectEffect("reverb", -50);
+ 	//  	tracks[1].connectEffect("delay", -20);
+ 	 	tracks[2].connectEffect("reverb", -20);
+		tracks[2].connectEffect("delay", -50);
+
+		//LOGIC//
+
+		for (var i = 0; i < tracks.length; i++) {
+
+			control.push(new param());
+			control[i].db = -10;
+			control[i].pan = 0.0;
+			control[i].freq = Nexus.ri(500, 8000);
+			control[i].clipIndex.push(tracks[i].getClipAmt());
+		}
+
+	
+
+		// UI //
+
+		startbutton = new Nexus.TextButton('#startbutton',{
+		    'size': [200,50],
+		    'state': false,
+		    'text': 'NS_1',
+		    'alternate': false
+		})
+
+
+		startbutton.colorize("accent",'#ff0000')
+		startbutton.colorize("fill","white")
+
+
+		startbutton.on('change',function(v) {
+		
+		// TONE GLOBAL //
+
+		Tone.Transport.bpm.value = songTempo;
+		Tone.Transport.start();
+		Tone.Master.volume.value = -2;
+
+		reset();
+			
+		})
+
+		multislider = new Nexus.Multislider('#multislider',{
+
+			 'size': [200,80],
+			 'numberOfSliders': totalTracks, 
+			 'min': -10,
+			 'max': -5,
+			 'step': 0,
+			 'values': [-10,-25,-50]
+		})
+		
+		multislider.colorize("accent","white")
+		multislider.colorize("fill","black")
+
+
+		multislider.on('change',function(v) {
+
+			for (var i = 0; i < tracks.length; i++) {
+  				
+  				if (v.index == i){ 
+					// console.log("Slider " + i + ": " + v.value);
+  				}
+  			}
+
+		})
+
+		slider = new Nexus.Slider('#slider',{
+		    'size': [200,20],
+		    'mode': 'relative',  // 'relative' or 'absolute'
+		    'min': 0,
+		    'max': 1,
+		    'step': 0,
+		    'value': 0
+		})
+
+		slider.on('change',function(v){
+
+			//console.log("Slider: " + v);
+			//source[0].setDist(1,v)
+		})
+
+		console.log("Loaded Successfully!");
+
+		}; //WINDOW ONLOAD FINISHED
+
+		window.addEventListener('keydown', function (e) {
+			
+			const keyName = event.key;
+
+			if (keyName=='a'){
+
+			}
+			
+			if(keyName=='s'){
+				tracks[0].setClip(1);
+			}
+
+		})
+
+		function updateTime(){
+           
+        requestAnimationFrame(updateTime)
+         
+         // VIDEO CONTROL //
+
+         for (var i = 0; i < tracks.length; i++) {
+
+       			if (tracks[i] != null) {
+
+	           		let e = Nexus.scale(tracks[0].getMeter(),0.0,1.0,-8,3);
+	           		source[i].setExposure(0,e);
+					source[i].setDist(1,tracks[2].getMeter());
+				}
+			}	
+
+			
+
+		// AUDIO CONTROL //
+
+		for (var i = 0; i < tracks.length; i++) {
+
+       			if (tracks[i] != null) {
+			
+						tracks[i].setVol(control[i].db);	
+						multislider.setSlider(i, tracks[i].getVol());
+					
+					if (i == 0) {
+						control[i].pan = 0;
+					}
+
+						tracks[i].setPan(control[i].pan);
+						tracks[i].setFilter(control[0].freq, 0.3);
+
+					}
+					
+					
+				}
+
+		}
+
+		loop = new Tone.Loop(function(time){
+
+			for (var i = 0; i < tracks.length; i++) {
+	
+				if (Nexus.coin(0.5) == 1) {
+
+					let min = multislider.min;
+					let max = multislider.max;
+					let n = Nexus.ri(min, max);
+					control[i].db = n;
+					
+					reverb.gain.value = control[2].db;
+					
+				}
+
+				if (Nexus.coin(0.5) == 1) {
+					let p = Nexus.ri(-1,1);
+					control[i].pan = p;
+				}
+
+				if (Nexus.coin(0.8) == 1) {
+					let f = Nexus.ri(500, 8000);
+					control[i].freq = f;
+				}
+
+				if (Nexus.coin(0.5) == 1) {
+					
+					for (var c = 0; c < control[i].clipIndex.length; c++) {
+						let r = Nexus.ri(control[i].clipIndex[c]);
+						tracks[i].setClip(r);
+					}
+				}
+
+			}
+
+		}, "4m").start();
+
+        updateTime()
+
+        function reset() {
+
+			let min = multislider.min;
+			let max = multislider.max;
+
+				for (var i = 0; i < tracks.length; i++) {
+					
+					let n = Nexus.ri(min, max);
+					control[i].db = n;
+
+					let f = Nexus.ri(500, 8000);
+					control[i].freq = f;
+
+					let p = Nexus.ri(-1,1);
+					control[i].pan = p;
+
+					let index = 0;
+					tracks[i].setClip(index);
+
+				}
+        }
+
+  </script>
+
+</body>
+</html>

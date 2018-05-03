@@ -1,0 +1,54 @@
+
+  html *
+    {
+       font-size: 1em;
+       color:white;
+       font-family: "HelveticaNeue-Light";
+    }
+
+ body { 
+    text-align:center;
+    background-color:black;
+    padding: 25px; 
+    margin: 0;
+   } 
+
+  li {  padding: 2px; }
+
+#top {
+  position: relative;
+  width: 99%;
+  outline: 1px solid white;
+  outline-color: white;
+  background-color:black;
+  color:white;
+
+}
+video {
+  width: 80%;
+  height: 50%;
+}
+img {
+  position: absolute;
+  left:125px;
+  top: 75px;
+  height: 100px;
+  margin: auto;
+}
+h1 {
+  font-size:3em; 
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  height: 50px;
+  margin: auto;
+  color: #f00;
+  font-size: 30pt;
+  text-align: center;
+
+}
+ 
+  
+ 
