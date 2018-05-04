@@ -108,8 +108,8 @@
 
 	//GLOBAL//
 	
-	const song = 'song1';
-	const songTempo = 160; //IMPORTANT: set to same as exported clips
+	const song = 'song3';
+	const songTempo = 140; //IMPORTANT: set to same as exported clips
 	
 	//PLAYERS + EFFECTS//
 
@@ -131,7 +131,7 @@
 					this.db = 0;
 					this.pan = 0.0;
 					this.freq = 5000;
-					this.res = 0.5;    
+					this.res = 0.7;    
 					this.clipIndex = []; }
 
 
@@ -169,14 +169,15 @@
 		var totalDrumClips = 4;
 		tracks.push(new ToneTrack(totalDrumClips, song + '/drum/'));
 		
-		var totalBassClips = 5;
+		var totalBassClips = 4;
+		tracks.push(new ToneTrack(totalBassClips, song + '/bass/'));
 		tracks.push(new ToneTrack(totalBassClips, song + '/bass/'));
 		
-		var totalPadClips = 4;
+		var totalPadClips = 3;
 		tracks.push(new ToneTrack(totalPadClips, song + '/lead/'));
 
-		var totalExtrasClips = 4;
-		tracks.push(new ToneTrack(totalPadClips, song + '/extras/'));
+		var totalExtrasClips = 3;
+		tracks.push(new ToneTrack(totalExtrasClips, song + '/extras/'));
 
 		for (var i = 0; i < tracks.length; i++) {
 
@@ -184,22 +185,24 @@
 		}
 		
 		for (var i = 0; i < totalDrumClips; i++) {
-			let dBeats = ['2m','1m', '2m', '1m'];
+			let dBeats = ['1m','4m', '2m', '11m'];
 			tracks[0].setClipLength(i,dBeats[i]);
 		}
 
 		for (var i = 0; i < totalBassClips; i++) {
-			let bBeats = ['2m','4m', '4m', '2m', '4m'];
+			let bBeats = ['8m','1m', '2m', '2m'];
 			tracks[1].setClipLength(i,bBeats[i]);
+			tracks[2].setClipLength(i,bBeats[i]);
 		}	
 
 		for (var i = 0; i < totalPadClips; i++) {
-			let pBeats = ['10m','15m', '2m', '1m']
-			tracks[2].setClipLength(i,pBeats[i]);
+			let pBeats = ['4m','3m', '1m'];
+			tracks[3].setClipLength(i,pBeats[i]);
 		}
 
 		for (var i = 0; i < totalExtrasClips; i++) {
-			tracks[3].setClipLength(i,'2m');
+			let eBeats = ['6m','3m', '3m', '6m'];
+			tracks[4].setClipLength(i,eBeats);
 		}
 		
 		reverb = new Tone.Freeverb(0.3, 5000).receive("reverb").toMaster();
@@ -208,8 +211,8 @@
 
  	//  	tracks[1].connectEffect("reverb", -50);
  	//  	tracks[1].connectEffect("delay", -20);
- 	  	tracks[2].connectEffect("reverb", -10);
-		tracks[2].connectEffect("delay", -10);
+ 	  	tracks[3].connectEffect("reverb", -10);
+		tracks[3].connectEffect("delay", -10);
 
 		//LOGIC//
 
@@ -229,7 +232,7 @@
 		startbutton = new Nexus.TextButton('#startbutton',{
 		    'size': [200,50],
 		    'state': false,
-		    'text': 'NS_1',
+		    'text': 'NS_3',
 		    'alternate': false
 		})
 
