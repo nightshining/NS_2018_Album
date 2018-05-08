@@ -94,7 +94,7 @@
 	<!-- Load JS lib -->
 	<!--<script language="javascript" type="text/javascript" src="../lib/Tone.min.js"></script>-->
 	<script language="javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tone/13.0.2/Tone.min.js"></script>
-	
+	<script language="javascript" type="text/javascript" src="../lib/StartAudioContext.js"></script>
 	<script language="javascript" type="text/javascript" src="../lib/NexusUI.min.js"></script>
 	<script language="javascript" type="text/javascript" src="../scripts/toneTrack.js"></script>
 	<script language="javascript" type="text/javascript" src="../scripts/seriouslyVid.js"></script>
@@ -110,6 +110,7 @@
 	
 	const song = 'song3';
 	const songTempo = 140; //IMPORTANT: set to same as exported clips
+	var context;
 	
 	//PLAYERS + EFFECTS//
 
@@ -137,7 +138,10 @@
 
 
 	window.onload = function() {
-
+ 		
+ 		context = new AudioContext();
+		StartAudioContext(Tone.context, "#startbutton");
+		
 		//VIDEO//
 
 		seriously = new Seriously();
@@ -147,7 +151,7 @@
 
 		for (var i = 0; i < source.length; i++) {
 			source[i].addEffect('exposure'); //fx index 0
-			source[i].addEffect('mirror'); // fx index 1
+			//source[i].addEffect('mirror'); // fx index 1
 			source[i].addEffect('tvglitch'); //fx index 2
 		}
 

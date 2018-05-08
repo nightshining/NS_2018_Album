@@ -87,3 +87,8 @@
 			this.effects[index].distortion = amt; 
 	};
 
+	SeriouslySource.prototype.setRGB = function(index, amt) {
+
+			this.effects[index].amount = amt; 
+	};
+

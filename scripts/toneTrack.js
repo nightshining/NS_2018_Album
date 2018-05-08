@@ -24,7 +24,7 @@
                 this.player.add(this.clipTags[i], this.clipPaths[i]);
                 this.player.get(this.clipTags[i]).chain(this.filter, this.fader, this.solo, this.meter, Tone.Master);//removing filter cuts delay
                 this.player.get(this.clipTags[i]).sync().start(0); //sync all loops
-                
+
                 this.player.get(this.clipTags[i]).loop = true;
                 this.player.get(this.clipTags[i]).fadeOut = '32n';
                 //this.loopEnd = _loopEnd;

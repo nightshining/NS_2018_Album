@@ -72,7 +72,6 @@
 	<script src="../lib/seriously.js"></script>
 
     <script src="../lib/effects/seriously.blur.js"></script>
-    <script src="../lib/effects/seriously.chromatic.js"></script>
     <script src="../lib/effects/seriously.directionblur.js"></script>
 	<script src="../lib/effects/seriously.dither.js"></script>
 	<script src="../lib/effects/seriously.exposure.js"></script>
@@ -92,7 +91,6 @@
 	<div class="ui" id="startbutton"></div>
 	<div class="ui" id="slider" style="display: none"><div>
 
-
 	<!-- Load JS lib -->
 	<!--<script language="javascript" type="text/javascript" src="../lib/Tone.min.js"></script>-->
 	<script language="javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tone/13.0.2/Tone.min.js"></script>
@@ -110,7 +108,7 @@
 
 	//GLOBAL//
 	
-	const song = 'song1';
+	const song = 'song5';
 	const songTempo = 160; //IMPORTANT: set to same as exported clips
 	
 	//PLAYERS + EFFECTS//
@@ -137,7 +135,6 @@
 					this.clipIndex = []; }
 
 
-
 	window.onload = function() {
 
 		//VIDEO//
@@ -149,8 +146,8 @@
 
 		for (var i = 0; i < source.length; i++) {
 			source[i].addEffect('exposure'); //fx index 0
-			source[i].addEffect('chromatic'); // fx index 1
-			//source[i].addEffect('mirror'); //fx index 2
+			source[i].addEffect('mirror'); // fx index 1
+			source[i].addEffect('tvglitch'); //fx index 2
 		}
 
 		for (var j = 0; j < source.length; j++) {
@@ -168,17 +165,17 @@
 
 		// AUDIO //
 
-		var totalDrumClips = 4;
+		var totalDrumClips = 3;
 		tracks.push(new ToneTrack(totalDrumClips, song + '/drum/'));
 		
-		var totalBassClips = 5;
+		var totalBassClips = 4;
 		tracks.push(new ToneTrack(totalBassClips, song + '/bass/'));
 		
-		var totalPadClips = 4;
+		var totalPadClips = 2;
 		tracks.push(new ToneTrack(totalPadClips, song + '/lead/'));
 
-		var totalExtrasClips = 4;
-		tracks.push(new ToneTrack(totalPadClips, song + '/extras/'));
+		var totalExtrasClips = 2;
+		tracks.push(new ToneTrack(totalExtrasClips, song + '/extras/'));
 
 		for (var i = 0; i < tracks.length; i++) {
 
@@ -186,30 +183,30 @@
 		}
 		
 		for (var i = 0; i < totalDrumClips; i++) {
-			let dBeats = ['2m','1m', '2m', '1m'];
-			tracks[0].setClipLength(i,dBeats[i]);
+			let dBeats = ['2m','4m', '4m'];
+			tracks[0].setClipLength(i, dBeats[i]);
 		}
 
 		for (var i = 0; i < totalBassClips; i++) {
-			let bBeats = ['2m','4m', '4m', '2m', '4m'];
-			tracks[1].setClipLength(i,bBeats[i]);
+			tracks[1].setClipLength(i,'2m');
 		}	
 
 		for (var i = 0; i < totalPadClips; i++) {
-			let pBeats = ['10m','15m', '2m', '1m']
-			tracks[2].setClipLength(i,pBeats[i]);
+			let pBeats = ['29m','16m']
+			tracks[2].setClipLength(i, pBeats[i]);
 		}
 
 		for (var i = 0; i < totalExtrasClips; i++) {
-			tracks[3].setClipLength(i,'2m');
+			let eBeats = ['2m','4m']
+			tracks[3].setClipLength(i, eBeats);
 		}
 		
 		reverb = new Tone.Freeverb(0.3, 5000).receive("reverb").toMaster();
 		delay = new Tone.FeedbackDelay("16n",0.8).receive("delay").toMaster();
  		
 
- 	 	tracks[0].connectEffect("reverb", -50);
- 	 	tracks[0].connectEffect("delay", -20);
+ 	//  	tracks[1].connectEffect("reverb", -50);
+ 	//  	tracks[1].connectEffect("delay", -20);
  	  	tracks[2].connectEffect("reverb", -10);
 		tracks[2].connectEffect("delay", -10);
 
@@ -224,14 +221,12 @@
 			control[i].clipIndex.push(tracks[i].getClipAmt());
 		}
 
-	
-
 		// UI //
 
 		startbutton = new Nexus.TextButton('#startbutton',{
 		    'size': [200,50],
 		    'state': false,
-		    'text': 'NS_1',
+		    'text': 'NS_5',
 		    'alternate': false
 		})
 
@@ -290,7 +285,6 @@
 
 			//console.log("Slider: " + v);
 			//source[0].setDist(1,v)
-
 		})
 
 		console.log("Loaded Successfully!");
@@ -322,15 +316,8 @@
            		source[0].setExposure(0,e);
 
            		source[2].setExposure(0,e);
-				source[2].setDist(1,tracks[2].getMeter());
-
-				let vidIndex = 1;
-				let effectsIndex = 1;
-				source[vidIndex].setRGB(effectsIndex, tracks[0].getMeter());
-
+				source[2].setDist(1,tracks[2].getMeter() * 0.1);
 			}
-			
-
 			
 
 		// AUDIO CONTROL //
@@ -357,8 +344,6 @@
 		}
 
 		loop = new Tone.Loop(function(time){
-
-
 
 			for (var i = 0; i < tracks.length; i++) {
 	
