@@ -8,28 +8,65 @@
 	<link rel="stylesheet" type="text/css" href="index.css">
 	<link rel="icon" href="assets/nslogo.ico" type="image/x-icon"/>
 	<link rel="shortcut icon" href="assets/nslogo.ico" type="image/x-icon"/>
+
 </head>
 <body>
+
 	<div id="top">
-		<video id="glass" width="640" height="480" autoplay loop>
+	
+		<video id="glass" width="640" height="480" loop>
 	        <source src="assets/videos/main.mp4" type="video/mp4">
 	    </video>
-	    <script type="text/javascript">
-	    	document.getElementById('glass').play();
-	    </script>
+
 		<img src="assets/nslogo.png"></img>
+	
 	</div>
+	
+	<div class="ui" id="startbutton"></div>
+
 	<div id="links">
 		<ul style="list-style-type:none">
-		  <li><a href="songs/song1.html">Song 1</a></li>
-		  <li><a href="songs/song2.html">Song 2</a></li>
-		  <li><a href="songs/song3.html">Song 3</a></li>
-		  <li><a href="songs/song4.html">Song 4</a></li>
-		  <li><a href="songs/song5.html">Song 5</a></li>
+		  <li><a href="songs/song1.html">NS_001</a></li>
+		  <li><a href="songs/song2.html">NS_002</a></li>
+		  <li><a href="songs/song3.html">NS_003</a></li>
+		  <li><a href="songs/song4.html">NS_004</a></li>
+		  <li><a href="songs/song5.html">NS_005</a></li>
 		  <li><a href="songs/about.html">About</a></li>
 		</ul>  
 	</div>
+	<script language="javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tone/13.0.2/Tone.min.js"></script>
+	<script language="javascript" type="text/javascript" src="lib/NexusUI.min.js"></script>
+	<script language="javascript">
+	
+	//UI// 
+	var startbutton;
+	var player; 
 
+	player = new Tone.Player({
+		"url" : "assets/samples/index.[mp3|ogg]",
+		"loopStart"  : 2.0,
+		"loop" : true
+	}).toMaster();
+
+	startbutton = new Nexus.TextButton('#startbutton',{
+		    'size': [200,50],
+		    'state': false,
+		    'text': 'Start',
+		    'alternate': false
+		})
+
+
+	startbutton.colorize("accent",'#ff0000')
+	startbutton.colorize("fill","white")
+
+
+	startbutton.on('change',function(v) {
+    	document.getElementById('glass').play();
+    	player.start();
+		
+	})
+	
+	</script>
 
 </body>
 </html>

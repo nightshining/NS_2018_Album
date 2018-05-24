@@ -7,7 +7,6 @@
     }
 
  body { 
-    text-align:center;
     background-color:black;
     padding: 25px; 
     margin: 0;
@@ -16,6 +15,7 @@
   li {  padding: 2px; }
 
 #top {
+  text-align:center;
   position: relative;
   width: 99%;
   outline: 1px solid white;
@@ -24,6 +24,31 @@
   color:white;
 
 }
+#links {
+    width:25%;
+    color: white;
+    padding-left: 50px;
+    padding-right: 50px;
+    margin: 15px;
+    position:relative;
+    right:25%;
+    left:50%;
+    margin-left:-125px;
+}
+.ui {
+    /*outline: 1px solid white;*/
+    background-color: black;
+    color: white;
+    padding: 5px;
+    padding-left: 50px;
+    padding-right: 50px;
+    margin: 15px;
+    position:relative;
+    right:25%;
+    left:50%;
+    margin-left:-150px;
+}
+
 video {
   width: 80%;
   height: 50%;
