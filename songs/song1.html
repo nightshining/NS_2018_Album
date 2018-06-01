@@ -60,14 +60,10 @@
 	    <video id="video2" width="640" height="480" autoplay loop style="display: none">
 	        <source src="../assets/videos/song1/Organic_Loop.mp4" type="video/mp4">
 	    </video>
-	    <!-- note: to fix bug not playing -->
-		<script type="text/javascript">
-	    	document.getElementById('video1').play();
-	    	document.getElementById('video2').play();
-	    </script>
-		<canvas class="objects" id="object0" width="300" height="300"></canvas>
-		<canvas class="objects" id="object1" width="300" height="300"></canvas>
-		<canvas class="objects" id="object2" width="300" height="300"></canvas>
+	 
+		<canvas class="objects" id="object0" width="300" height="400"></canvas>
+		<canvas class="objects" id="object1" width="300" height="400"></canvas>
+		<canvas class="objects" id="object2" width="300" height="400"></canvas>
 
 	</div>
 
@@ -209,12 +205,12 @@
 			tracks[3].setClipLength(i,'2m');
 		}
 		
-		reverb = new Tone.Freeverb(0.3, 5000).receive("reverb").toMaster();
+		reverb = new Tone.Freeverb(0.9, 20000).receive("reverb").toMaster();
 		delay = new Tone.FeedbackDelay("16n",0.8).receive("delay").toMaster();
  		
 
- 	 	tracks[0].connectEffect("reverb", -50);
- 	 	tracks[0].connectEffect("delay", -20);
+ 	 	tracks[0].connectEffect("reverb", -30);
+ 	 	tracks[0].connectEffect("delay", -30);
  	  	tracks[2].connectEffect("reverb", -10);
 		tracks[2].connectEffect("delay", -10);
 
@@ -238,6 +234,7 @@
 		    'state': false,
 		    'text': 'NS_1',
 		    'alternate': false
+
 		})
 
 
@@ -251,9 +248,16 @@
 
 		Tone.Transport.bpm.value = songTempo;
 		Tone.Transport.start();
-		Tone.Master.volume.value = -2;
+		Tone.Master.volume.value = 0;
 
+		// AUDIO //
 		reset();
+
+		// VIDEO //
+			document.getElementById('video1').play();
+	    	document.getElementById('video1').loop = true;
+	    	document.getElementById('video2').play();
+	    	document.getElementById('video2').loop = true;
 			
 		})
 
@@ -261,8 +265,8 @@
 
 			 'size': [200,80],
 			 'numberOfSliders': tracks.length, 
-			 'min': -25,
-			 'max': -2,
+			 'min': -20,
+			 'max': 0,
 			 'step': 0,
 			 'values': [-10,-25,-50]
 		})
@@ -323,15 +327,18 @@
          // VIDEO CONTROL //
 
          	if (tracks[0] != null) {
-           		let e = Nexus.scale(tracks[0].getMeter(),0.0,1.0,-8,10);
+           		let e = Nexus.scale(tracks[0].getMeter(),0.0,1.0,-7,7);
            		source[0].setExposure(0,e);
 
            		source[2].setExposure(0,e);
 				source[2].setDist(1,tracks[2].getMeter());
 
+				let bassGain = Nexus.scale(tracks[1].getMeter(),0.0,1.0,-8,8);
+				source[1].setExposure(0,bassGain);
+
 				let vidIndex = 1;
 				let effectsIndex = 1;
-				source[vidIndex].setRGB(effectsIndex, tracks[0].getMeter());
+				source[vidIndex].setRGB(effectsIndex, tracks[2].getMeter()*10.0);
 
 			}
 			
@@ -410,7 +417,7 @@
 			let min = multislider.min;
 			let max = multislider.max;
 
-				for (var i = 0; i < tracks.length; i++) {
+			for (var i = 0; i < tracks.length; i++) {
 					
 					let n = Nexus.ri(min, max);
 					control[i].db = n;
@@ -421,11 +428,15 @@
 					let p = Nexus.ri(-1,1);
 					control[i].pan = p;
 
-					let index = 0;
-					tracks[i].setClip(index);
+					// let index = 0;
+					// tracks[i].setClip(index);
 
-				}
-        }
+					let r = Nexus.ri(tracks[i].getClipAmt());
+					tracks[i].setClip(r);
+					console.log("Track: " + i + " Playing Clip: " + r);
+
+					}
+			}
 
   </script>
 

@@ -5,7 +5,6 @@
             this.clipPaths = [];
             this.clipTags = [];
             this.totalClips = _totalClips;
-
             this.meter = new Tone.Meter();
             this.filter = new Tone.LowpassCombFilter();
             this.solo = new Tone.Solo();
@@ -50,12 +49,12 @@
         this.solo.solo = toggle;
     }
     ToneTrack.prototype.setClipLength = function(clipIndex, _loopEnd) {
-        let tag = 'clip';
+        var tag = 'clip';
         this.player.get(tag + clipIndex).loopEnd = _loopEnd;
 
     }
     ToneTrack.prototype.setClip = function(clipIndex) {
-        let tag = 'clip';
+        var tag = 'clip';
         this.player.get(this.initialClip).mute = true // mute last clip 
         this.player.get(tag + clipIndex).mute = false // unmute next clip
         this.player.get(tag + clipIndex).loop = true;
@@ -70,20 +69,20 @@
 
     ToneTrack.prototype.getMeter = function(){
 
-        let level = this.meter.getLevel();
+        var level = this.meter.getLevel();
         level = Tone.dbToGain(level);
         return level;
         //console.log("Gain: " + level);
-
     }
     ToneTrack.prototype.getVol = function(){
-        let v = this.fader.volume.value;
+        var v = this.fader.volume.value;
         return v;
     }
     ToneTrack.prototype.getClipAmt = function() {
-        let c = this.totalClips; 
+        var c = this.totalClips; 
         return c;
     }
+    
  
 
 

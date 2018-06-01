@@ -175,8 +175,7 @@
 		var totalDrumClips = 4;
 		tracks.push(new ToneTrack(totalDrumClips, song + '/drum/'));
 		
-		var totalBassClips = 4;
-		tracks.push(new ToneTrack(totalBassClips, song + '/bass/'));
+		var totalBassClips = 3
 		tracks.push(new ToneTrack(totalBassClips, song + '/bass/'));
 
 		var totalPadClips = 4;
@@ -198,25 +197,24 @@
 		for (var i = 0; i < totalBassClips; i++) {
 			let bBeats = ['8m','8m', '2m', '2m'];
 			tracks[1].setClipLength(i,bBeats[i]);
-			tracks[2].setClipLength(i,bBeats[i]);
 		}	
 
 		for (var i = 0; i < totalPadClips; i++) {
 			let pBeats = ['6m','8m', '1m', '1m']
-			tracks[3].setClipLength(i,pBeats[i]); 
+			tracks[2].setClipLength(i,pBeats[i]); 
 		}
 
 		for (var i = 0; i < totalExtrasClips; i++) {
-			let eBeats = ['6m','8m', '2m', '1m']
-			tracks[4].setClipLength(i,eBeats);
+			var eBeats = ['6m','2n', '2m', '1m']
+			tracks[3].setClipLength(i,eBeats[i]);
 		}
 		
-		reverb = new Tone.Freeverb(0.5, 5000).receive("reverb").toMaster();
-		delay = new Tone.FeedbackDelay("16n",0.2).receive("delay").toMaster();
+		reverb = new Tone.Freeverb(0.9, 10000).receive("reverb").toMaster();
+		delay = new Tone.FeedbackDelay("4n",0.8).receive("delay").toMaster();
  	
 
- 	  	tracks[3].connectEffect("reverb", -40);
-		tracks[3].connectEffect("delay", -40);
+ 	  	tracks[2].connectEffect("reverb", -30);
+		tracks[2].connectEffect("delay", -40);
 
 		//LOGIC//
 
@@ -226,7 +224,7 @@
 			control[i].db = -10;
 			control[i].pan = 0.0;
 			control[i].freq = Nexus.ri(5000, 8000);
-			control[i].clipIndex.push(tracks[i].getClipAmt());
+			control[i].clipIndex.length = tracks[i].getClipAmt(); //NOTE: changed code 5/30
 		}
 
 	
@@ -244,16 +242,17 @@
 		startbutton.colorize("accent",'#ff0000')
 		startbutton.colorize("fill","white")
 
+		//Start Event//
 
 		startbutton.on('change',function(v) {
-		
-		// TONE GLOBAL //
 
-		Tone.Transport.bpm.value = songTempo;
-		Tone.Transport.start();
-		Tone.Master.volume.value = -2;
+			// TONE GLOBAL //
 
-		reset();
+			Tone.Transport.bpm.value = songTempo;
+			Tone.Transport.start();
+			Tone.Master.volume.value = -1;
+
+			reset();
 			
 		})
 
@@ -261,8 +260,8 @@
 
 			 'size': [200,80],
 			 'numberOfSliders': tracks.length, 
-			 'min': -25,
-			 'max': -2,
+			 'min': -20,
+			 'max': -1,
 			 'step': 0,
 			 'values': [-10,-25,-50]
 		})
@@ -310,7 +309,7 @@
 			}
 			
 			if(keyName=='s'){
-				tracks[0].setClip(1);
+
 			}
 
 		})
@@ -338,6 +337,7 @@
 
        			if (tracks[i] != null) {
 			
+						
 						tracks[i].setVol(control[i].db);	
 						multislider.setSlider(i, tracks[i].getVol());
 					
@@ -346,7 +346,7 @@
 					}
 
 						tracks[i].setPan(control[i].pan);
-						tracks[i].setFilter(control[0].freq, 0.3);
+						tracks[i].setFilter(control[i].freq, 0.3);
 
 					}
 					
@@ -357,20 +357,23 @@
 
 		loop = new Tone.Loop(function(time){
 
-
-
 			for (var i = 0; i < tracks.length; i++) {
 	
-				if (Nexus.coin(0.5) == 1) {
+				if (Nexus.coin(0.8) == 1) {
 
 					let min = multislider.min;
 					let max = multislider.max;
 					let n = Nexus.ri(min, max);
 					control[i].db = n;
 
+					for (var i = 0; i < tracks.length; i++) {
+						let r = Nexus.ri(tracks[i].getClipAmt());
+						tracks[i].setClip(r);
+					}
+
 				}
 
-				if (Nexus.coin(0.5) == 1) {
+				if (Nexus.coin(0.6) == 1) {
 					let p = Nexus.ri(-1,1);
 					control[i].pan = p;
 				}
@@ -380,20 +383,13 @@
 					control[i].freq = f;
 				}
 
-				if (Nexus.coin(0.5) == 1) {
+				if (Nexus.coin(0.2) == 1) {
+
 					
-					for (var c = 0; c < control[i].clipIndex.length; c++) {
-						let r = Nexus.ri(control[i].clipIndex[c]);
-						tracks[i].setClip(r);
-					}
+		
 				}
 
 			}
-
-
-			// let rTrack = Nexus.ri(tracks.length);
-			// let rSolo = Nexus.ri(0,2);
-			// tracks[rTrack].setSolo(rSolo);
 
 		}, "4m").start();
 
@@ -415,11 +411,17 @@
 					let p = Nexus.ri(-1,1);
 					control[i].pan = p;
 
-					let index = 0;
-					tracks[i].setClip(index);
+					// let index = 0;
+					// tracks[i].setClip(index);
+
+					let r = Nexus.ri(tracks[i].getClipAmt());
+					tracks[i].setClip(r);
+					console.log("Track: " + i + " Playing Clip: " + r);
+
+					}
 
 				}
-        }
+        
 
   </script>
 
