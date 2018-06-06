@@ -59,12 +59,6 @@
 	    <video id="video2" width="640" height="480" autoplay loop style="display: none">
 	        <source src="../assets/videos/song5/Wave_Loop.mp4" type="video/mp4">
 	    </video>
-		
-		<!-- note: to fix bug not playing -->
-		<script type="text/javascript">
-	    	document.getElementById('video1').play();
-	    	document.getElementById('video2').play();
-	    </script>
 
 		<canvas class="objects" id="object0" width="300" height="300"></canvas>
 		<canvas class="objects" id="object1" width="300" height="300"></canvas>
@@ -95,7 +89,7 @@
 
 	<div class="ui" id="multislider"></div>
 	<div class="ui" id="startbutton"></div>
-	<div class="ui" id="slider" style="display: none"><div>
+	<div class="ui" id="slider"><div>
 
 	<!-- Load JS lib -->
 	<!--<script language="javascript" type="text/javascript" src="../lib/Tone.min.js"></script>-->
@@ -153,7 +147,7 @@
 
 		for (var i = 0; i < source.length; i++) {
 			source[i].addEffect('exposure'); //fx index 0
-			source[i].addEffect('mirror'); // fx index 1
+			//source[i].addEffect('mirror'); // fx index 1
 			source[i].addEffect('tvglitch'); //fx index 2
 		}
 
@@ -199,21 +193,20 @@
 		}	
 
 		for (var i = 0; i < totalPadClips; i++) {
-			let pBeats = ['29m','16m']
+			var pBeats = ['29m','16m']
 			tracks[2].setClipLength(i, pBeats[i]);
 		}
 
 		for (var i = 0; i < totalExtrasClips; i++) {
-			let eBeats = ['2m','4m']
-			tracks[3].setClipLength(i, eBeats);
+			var eBeats = ['16n','16n']
+			tracks[3].setClipLength(i, eBeats[i]);
 		}
 		
 		reverb = new Tone.Freeverb(0.3, 5000).receive("reverb").toMaster();
 		delay = new Tone.FeedbackDelay("16n",0.8).receive("delay").toMaster();
  		
 
- 	//  	tracks[1].connectEffect("reverb", -50);
- 	//  	tracks[1].connectEffect("delay", -20);
+
  	  	tracks[2].connectEffect("reverb", -10);
 		tracks[2].connectEffect("delay", -10);
 
@@ -225,7 +218,9 @@
 			control[i].db = -10;
 			control[i].pan = 0.0;
 			control[i].freq = Nexus.ri(5000, 8000);
-			control[i].clipIndex.push(tracks[i].getClipAmt());
+			// control[i].clipIndex.push(tracks[i].getClipAmt());
+			control[i].clipIndex.length = tracks[i].getClipAmt(); //NOTE: changed code 5/30
+
 		}
 
 		// UI //
@@ -251,6 +246,12 @@
 		Tone.Master.volume.value = -2;
 
 		reset();
+
+		// VIDEO //
+			document.getElementById('video1').play();
+	    	document.getElementById('video1').loop = true;
+	    	document.getElementById('video2').play();
+	    	document.getElementById('video2').loop = true;
 			
 		})
 
@@ -258,8 +259,8 @@
 
 			 'size': [200,80],
 			 'numberOfSliders': tracks.length, 
-			 'min': -25,
-			 'max': -2,
+			 'min': -20,
+			 'max': 0,
 			 'step': 0,
 			 'values': [-10,-25,-50]
 		})
@@ -319,11 +320,14 @@
          // VIDEO CONTROL //
 
          	if (tracks[0] != null) {
-           		let e = Nexus.scale(tracks[0].getMeter(),0.0,1.0,-8,10);
+           		let e = Nexus.scale(tracks[0].getMeter(),0.0,1.0,-7,7);
            		source[0].setExposure(0,e);
+				source[2].setExposure(0,e);
 
-           		source[2].setExposure(0,e);
-				source[2].setDist(1,tracks[2].getMeter() * 0.1);
+           		let d = Nexus.scale(tracks[2].getMeter(),0.0,1.0,0.0,0.3);
+				source[0].setDist(1,d);
+				source[1].setDist(1,d);
+				source[2].setDist(1,d);
 			}
 			
 
@@ -341,7 +345,7 @@
 					}
 
 						tracks[i].setPan(control[i].pan);
-						tracks[i].setFilter(control[0].freq, 0.3);
+						tracks[i].setFilter(control[i].freq, 0.3);
 
 					}
 					
@@ -352,47 +356,13 @@
 
 		loop = new Tone.Loop(function(time){
 
-			for (var i = 0; i < tracks.length; i++) {
-	
-				if (Nexus.coin(0.5) == 1) {
-
-					let min = multislider.min;
-					let max = multislider.max;
-					let n = Nexus.ri(min, max);
-					control[i].db = n;
-
-				}
-
-				if (Nexus.coin(0.5) == 1) {
-					let p = Nexus.ri(-1,1);
-					control[i].pan = p;
-				}
-
-				if (Nexus.coin(0.8) == 1) {
-					let f = Nexus.ri(500, 8000);
-					control[i].freq = f;
-				}
-
-				if (Nexus.coin(0.5) == 1) {
-					
-					for (var c = 0; c < control[i].clipIndex.length; c++) {
-						let r = Nexus.ri(control[i].clipIndex[c]);
-						tracks[i].setClip(r);
-					}
-				}
-
-			}
-
-
-			// let rTrack = Nexus.ri(tracks.length);
-			// let rSolo = Nexus.ri(0,2);
-			// tracks[rTrack].setSolo(rSolo);
+			reset()
 
 		}, "4m").start();
 
         updateTime()
 
-        function reset() {
+  function reset() {
 
 			let min = multislider.min;
 			let max = multislider.max;
@@ -408,11 +378,12 @@
 					let p = Nexus.ri(-1,1);
 					control[i].pan = p;
 
-					let index = 0;
-					tracks[i].setClip(index);
+					let r = Nexus.ri(tracks[i].getClipAmt());
+					tracks[i].setClip(r);
+
+					}
 
 				}
-        }
 
   </script>
 

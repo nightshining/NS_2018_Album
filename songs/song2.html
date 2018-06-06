@@ -253,6 +253,12 @@
 			Tone.Master.volume.value = -1;
 
 			reset();
+
+			// VIDEO //
+			document.getElementById('video1').play();
+	    	document.getElementById('video1').loop = true;
+	    	document.getElementById('video2').play();
+	    	document.getElementById('video2').loop = true;
 			
 		})
 
@@ -261,7 +267,7 @@
 			 'size': [200,80],
 			 'numberOfSliders': tracks.length, 
 			 'min': -20,
-			 'max': -1,
+			 'max': 0,
 			 'step': 0,
 			 'values': [-10,-25,-50]
 		})

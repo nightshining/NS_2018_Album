@@ -222,7 +222,9 @@
 			control[i].db = -10;
 			control[i].pan = 0.0;
 			control[i].freq = Nexus.ri(5000, 8000);
-			control[i].clipIndex.push(tracks[i].getClipAmt());
+			//control[i].clipIndex.push(tracks[i].getClipAmt());
+			control[i].clipIndex.length = tracks[i].getClipAmt(); //NOTE: changed code 5/30
+
 		}
 
 	
@@ -359,7 +361,7 @@
 					}
 
 						tracks[i].setPan(control[i].pan);
-						tracks[i].setFilter(control[0].freq, 0.3);
+						tracks[i].setFilter(control[i].freq, 0.3);
 
 					}
 					
@@ -412,12 +414,12 @@
 
         updateTime()
 
-        function reset() {
+ 	function reset() {
 
 			let min = multislider.min;
 			let max = multislider.max;
 
-			for (var i = 0; i < tracks.length; i++) {
+				for (var i = 0; i < tracks.length; i++) {
 					
 					let n = Nexus.ri(min, max);
 					control[i].db = n;
@@ -436,7 +438,8 @@
 					console.log("Track: " + i + " Playing Clip: " + r);
 
 					}
-			}
+
+				}
 
   </script>
 
