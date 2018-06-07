@@ -19,6 +19,18 @@
 
   li { padding: 20px; }
 
+  #links {
+    width:25%;
+    color: white;
+    padding-left: 50px;
+    padding-right: 50px;
+    margin: 15px;
+    position:relative;
+    right:25%;
+    left:50%;
+    margin-left:-125px;
+}
+
   .ui {
   	/*outline: 1px solid white;*/
   	background-color: black;
@@ -59,12 +71,7 @@
 	    <video id="video2" width="640" height="480" style="display: none">
 	        <source src="../assets/videos/song3/Lights_Loop.mp4" type="video/mp4">
 	    </video>
-			    <!-- note: to fix bug not playing -->
-		<script type="text/javascript">
-	    	document.getElementById('video1').play();
-	    	document.getElementById('video2').play();
-	    </script>
-	    
+	
 		<canvas class="objects" id="object0" width="300" height="300"></canvas>
 		<canvas class="objects" id="object1" width="300" height="300"></canvas>
 		<canvas class="objects" id="object2" width="300" height="300"></canvas>
@@ -159,6 +166,9 @@
 			//source[i].addEffect('mirror'); // fx index 1
 			source[i].addEffect('tvglitch'); //fx index 2
 		}
+		
+		source[0].setDist(1,0);
+		source[2].setDist(1,0);
 
 		for (var j = 0; j < source.length; j++) {
 			let index = j;
@@ -220,7 +230,7 @@
 
  	//  	tracks[1].connectEffect("reverb", -50);
  	//  	tracks[1].connectEffect("delay", -20);
- 	  	tracks[3].connectEffect("reverb", -10);
+ 	  	tracks[3 ].connectEffect("reverb", -10);
 		tracks[3].connectEffect("delay", -10);
 
 		//LOGIC//
@@ -335,11 +345,15 @@
          // VIDEO CONTROL //
 
          	if (tracks[0] != null) {
-           		let e = Nexus.scale(tracks[0].getMeter(),0.0,1.0,-8,10);
+           		var e = Nexus.scale(tracks[1].getMeter(),0.0,0.2,-10,10);
            		source[0].setExposure(0,e);
+				source[2].setExposure(0,e);
 
-           		source[2].setExposure(0,e);
-				source[2].setDist(1,tracks[2].getMeter() * 0.1);
+				var center = Nexus.scale(tracks[0].getMeter(),0.0,0.5,-10,10);
+				source[1].setExposure(0,center);
+
+
+				source[1].setDist(1,tracks[2].getMeter() * 0.2);
 			}
 			
 

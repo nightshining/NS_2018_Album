@@ -19,6 +19,18 @@
 
   li { padding: 20px; }
 
+  #links {
+    width:25%;
+    color: white;
+    padding-left: 50px;
+    padding-right: 50px;
+    margin: 15px;
+    position:relative;
+    right:25%;
+    left:50%;
+    margin-left:-125px;
+}
+
   .ui {
   	/*outline: 1px solid white;*/
   	background-color: black;
@@ -59,12 +71,6 @@
 	    <video id="video2" width="640" height="480" style="display: none">
 	        <source src="../assets/videos/song2/LandscapeWave_Loop.mp4" type="video/mp4">
 	    </video>
-
-	    <!-- note: to fix bug not playing -->
-		<script type="text/javascript">
-	    	document.getElementById('video1').play();
-	    	document.getElementById('video2').play();
-	    </script>
 			
 		<canvas class="objects" id="object0" width="300" height="300"></canvas>
 		<canvas class="objects" id="object1" width="300" height="300"></canvas>

@@ -19,6 +19,18 @@
 
   li { padding: 20px; }
 
+  #links {
+    width:25%;
+    color: white;
+    padding-left: 50px;
+    padding-right: 50px;
+    margin: 15px;
+    position:relative;
+    right:25%;
+    left:50%;
+    margin-left:-125px;
+}
+
   .ui {
   	/*outline: 1px solid white;*/
   	background-color: black;
@@ -330,7 +342,7 @@
          // VIDEO CONTROL //
 
          	if (tracks[0] != null) {
-           		let e = Nexus.scale(tracks[0].getMeter(),0.0,1.0,-7,8) + Nexus.scale(tracks[3].getMeter(),0.0,1.0,-7,8);
+           		let e = Nexus.scale(tracks[0].getMeter()*2.0,0.0,1.0,-7,8);
            		source[0].setExposure(0,e);
            		source[2].setExposure(0,e);
 				
@@ -339,7 +351,7 @@
 				let effectsIndex = 1;
 				source[vidIndex].setRGB(effectsIndex, tracks[1].getMeter() * 5.0);
 
-				let d = Nexus.scale(tracks[1].getMeter(),0.0,1.0,0.0,0.4);
+				let d = Nexus.scale(tracks[1].getMeter()*5.0,0.0,1.0,0.0,0.1);
 				// source[0].setDist(2,d);
 				source[1].setDist(2,d);
 				// source[2].setDist(2,d);
@@ -362,7 +374,7 @@
 					}
 
 						tracks[i].setPan(control[i].pan);
-						tracks[i].setFilter(control[i].freq, 0.1);
+						tracks[i].setFilter(control[i].freq, 0.4);
 
 					}
 					
