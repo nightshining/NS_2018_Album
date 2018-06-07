@@ -52,11 +52,11 @@
 
  	<div id="objectContainer">
 
-		<video id="video1" width="640" height="480" autoplay loop style="display: none">
+		<video id="video1" width="640" height="480" style="display: none">
 	        <source src="../assets/videos/song3/Lights2_Loop.mp4" type="video/mp4">
 	    </video>
 
-	    <video id="video2" width="640" height="480" autoplay loop style="display: none">
+	    <video id="video2" width="640" height="480" style="display: none">
 	        <source src="../assets/videos/song3/Lights_Loop.mp4" type="video/mp4">
 	    </video>
 			    <!-- note: to fix bug not playing -->
@@ -182,10 +182,10 @@
 		tracks.push(new ToneTrack(totalBassClips, song + '/bass/'));
 		tracks.push(new ToneTrack(totalBassClips, song + '/bass/'));
 		
-		var totalPadClips = 3;
+		var totalPadClips = 4;
 		tracks.push(new ToneTrack(totalPadClips, song + '/lead/'));
 
-		var totalExtrasClips = 3;
+		var totalExtrasClips = 4;
 		tracks.push(new ToneTrack(totalExtrasClips, song + '/extras/'));
 
 		for (var i = 0; i < tracks.length; i++) {
@@ -205,12 +205,12 @@
 		}	
 
 		for (var i = 0; i < totalPadClips; i++) {
-			let pBeats = ['4m','3m', '1m'];
+			let pBeats = ['2m','16n', '1m', '1m'];
 			tracks[3].setClipLength(i,pBeats[i]);
 		}
 
 		for (var i = 0; i < totalExtrasClips; i++) {
-			let eBeats = ['6m','3m', '3m', '6m'];
+			let eBeats = ['1m','2m', '1m', '4m'];
 			tracks[4].setClipLength(i,eBeats[i]);
 		}
 		
@@ -274,7 +274,7 @@
 
 			 'size': [200,80],
 			 'numberOfSliders': tracks.length, 
-			 'min': -20,
+			 'min': -10,
 			 'max': 0,
 			 'step': 0,
 			 'values': [-10,-25,-50]
@@ -368,40 +368,12 @@
 
 		}
 
+	
 		loop = new Tone.Loop(function(time){
 
 
 
-			for (var i = 0; i < tracks.length; i++) {
-	
-				if (Nexus.coin(0.5) == 1) {
-
-					let min = multislider.min;
-					let max = multislider.max;
-					let n = Nexus.ri(min, max);
-					control[i].db = n;
-
-				}
-
-				if (Nexus.coin(0.5) == 1) {
-					let p = Nexus.ri(-1,1);
-					control[i].pan = p;
-				}
-
-				if (Nexus.coin(0.8) == 1) {
-					let f = Nexus.ri(500, 8000);
-					control[i].freq = f;
-				}
-
-				if (Nexus.coin(0.5) == 1) {
-					
-					for (var c = 0; c < control[i].clipIndex.length; c++) {
-						let r = Nexus.ri(control[i].clipIndex[c]);
-						tracks[i].setClip(r);
-					}
-				}
-
-			}
+			reset();
 
 
 			// let rTrack = Nexus.ri(tracks.length);
@@ -414,8 +386,8 @@
 
   function reset() {
 
-			let min = multislider.min;
-			let max = multislider.max;
+				let min = multislider.min;
+				let max = multislider.max;
 
 				for (var i = 0; i < tracks.length; i++) {
 					
@@ -430,11 +402,12 @@
 
 					// let index = 0;
 					// tracks[i].setClip(index);
+				if (Nexus.coin(0.5) == 1) {
 
 					let r = Nexus.ri(tracks[i].getClipAmt());
 					tracks[i].setClip(r);
-					console.log("Track: " + i + " Playing Clip: " + r);
-
+					//console.log("Track: " + i + " Playing Clip: " + r);
+						}
 					}
 
 				}

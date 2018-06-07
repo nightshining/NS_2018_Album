@@ -53,11 +53,11 @@
 
  	<div id="objectContainer">
 
-		<video id="video1" width="640" height="480" autoplay loop style="display: none">
+		<video id="video1" width="640" height="480" style="display: none">
 	        <source src="../assets/videos/song1/moon_loop.mp4" type="video/mp4">
 	    </video>
 
-	    <video id="video2" width="640" height="480" autoplay loop style="display: none">
+	    <video id="video2" width="640" height="480" style="display: none">
 	        <source src="../assets/videos/song1/Organic_Loop.mp4" type="video/mp4">
 	    </video>
 	 
@@ -209,8 +209,8 @@
 		delay = new Tone.FeedbackDelay("16n",0.8).receive("delay").toMaster();
  		
 
- 	 	tracks[0].connectEffect("reverb", -30);
- 	 	tracks[0].connectEffect("delay", -30);
+ 	 	//tracks[0].connectEffect("reverb", -30);
+ 	 	//tracks[0].connectEffect("delay", -30);
  	  	tracks[2].connectEffect("reverb", -10);
 		tracks[2].connectEffect("delay", -10);
 
@@ -329,7 +329,7 @@
          // VIDEO CONTROL //
 
          	if (tracks[0] != null) {
-           		let e = Nexus.scale(tracks[0].getMeter(),0.0,1.0,-7,7);
+           		let e = Nexus.scale(tracks[0].getMeter(),0.0,1.0,-10,8);
            		source[0].setExposure(0,e);
 
            		source[2].setExposure(0,e);
@@ -374,36 +374,7 @@
 
 
 
-			for (var i = 0; i < tracks.length; i++) {
-	
-				if (Nexus.coin(0.5) == 1) {
-
-					let min = multislider.min;
-					let max = multislider.max;
-					let n = Nexus.ri(min, max);
-					control[i].db = n;
-
-				}
-
-				if (Nexus.coin(0.5) == 1) {
-					let p = Nexus.ri(-1,1);
-					control[i].pan = p;
-				}
-
-				if (Nexus.coin(0.8) == 1) {
-					let f = Nexus.ri(500, 8000);
-					control[i].freq = f;
-				}
-
-				if (Nexus.coin(0.5) == 1) {
-					
-					for (var c = 0; c < control[i].clipIndex.length; c++) {
-						let r = Nexus.ri(control[i].clipIndex[c]);
-						tracks[i].setClip(r);
-					}
-				}
-
-			}
+			reset();
 
 
 			// let rTrack = Nexus.ri(tracks.length);
@@ -435,13 +406,45 @@
 
 					let r = Nexus.ri(tracks[i].getClipAmt());
 					tracks[i].setClip(r);
-					console.log("Track: " + i + " Playing Clip: " + r);
+					//console.log("Track: " + i + " Playing Clip: " + r);
 
 					}
 
 				}
 
   </script>
-
+	
 </body>
 </html>
+
+<!-- old loop
+for (var i = 0; i < tracks.length; i++) {
+	
+				if (Nexus.coin(0.5) == 1) {
+
+					let min = multislider.min;
+					let max = multislider.max;
+					let n = Nexus.ri(min, max);
+					control[i].db = n;
+
+				}
+
+				if (Nexus.coin(0.5) == 1) {
+					let p = Nexus.ri(-1,1);
+					control[i].pan = p;
+				}
+
+				if (Nexus.coin(0.8) == 1) {
+					let f = Nexus.ri(500, 8000);
+					control[i].freq = f;
+				}
+
+				if (Nexus.coin(0.5) == 1) {
+					
+					for (var c = 0; c < control[i].clipIndex.length; c++) {
+						let r = Nexus.ri(control[i].clipIndex[c]);
+						tracks[i].setClip(r);
+					}
+				}
+
+			} -->

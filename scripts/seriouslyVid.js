@@ -23,8 +23,8 @@
 			//this.effects[0].source = '#video';
 
 			this.reformat = seriously.transform('reformat');
-			this.reformat.width = this.target.width;
-			this.reformat.height = this.target.height;
+			this.reformat.width = this.target.width * 1.2;
+			this.reformat.height = this.target.height * 1.2;
 			
 			//this.reformat.source = '#video';
 			this.reformat.source = videoId;
