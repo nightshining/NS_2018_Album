@@ -1,7 +1,7 @@
 
   html *
     {
-       font-size: 1em;
+       /*font-size: 1em;*/
        color:white;
        font-family: "HelveticaNeue-Light";
     }
@@ -24,18 +24,6 @@
   color:white;
 
 }
-#links {
-    width:25%;
-    color: white;
-    padding-left: 50px;
-    padding-right: 50px;
-    margin: 15px;
-    position:relative;
-    right:25%;
-    left:50%;
-    /*margin-left:-125px;*/
-    margin-left: -155px;
-}
 .ui {
     /*outline: 1px solid white;*/
     background-color: black;
@@ -47,7 +35,7 @@
     position:relative;
     right:25%;
     left:50%;
-    margin-left:-150px;
+    margin-left:-140px;
 }
 /*img {
   position: absolute;
@@ -72,7 +60,7 @@ h1 {
   margin: auto;
   color: #f00;
   font-size: 30pt;
-  text-align: justify;
+  text-align: center;
 
 }
 
@@ -85,6 +73,17 @@ h1 {
     width: 45px;
     height: 45px;
   }
+  #links {
+    width:50%;
+    color: white;
+    margin: 5px;
+    position:relative;
+    right:25%;
+    left:60%;
+    font-size: 0.8em;
+    /*margin-left:-125px;*/
+    margin-left: -155px;
+}
 
 }
 
@@ -97,6 +96,19 @@ h1 {
     width: 75px;
     height: 75px;
   }
+  #links {
+    width:50%;
+    color: white;
+    padding-left: 50px;
+    padding-right: 50px;
+    margin: 5px;
+    position:relative;
+    right:25%;
+    left:50%;
+    font-size: 0.8em;
+    /*margin-left:-125px;*/
+    margin-left: -155px;
+}
 }
 
 /* Desktop Styles */
@@ -109,6 +121,18 @@ h1 {
     height: 100px;
     margin: auto;
   }
+  #links {
+    width:25%;
+    color: white;
+    padding-left: 50px;
+    padding-right: 50px;
+    margin: 15px;
+    position:relative;
+    right:25%;
+    left:50%;
+    /*margin-left:-125px;*/
+    margin-left: -155px;
+}
 }
   
  
