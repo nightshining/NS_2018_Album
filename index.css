@@ -48,17 +48,17 @@
     left:50%;
     margin-left:-150px;
 }
-
-video {
-  width: 80%;
-  height: 50%;
-}
-img {
+/*img {
   position: absolute;
   left:125px;
   top: 75px;
   height: 100px;
   margin: auto;
+}*/
+
+video {
+  width: 80%;
+  height: 50%;
 }
 h1 {
   font-size:3em; 
@@ -74,6 +74,40 @@ h1 {
   text-align: center;
 
 }
- 
+
+ /* Mobile Styles */
+@media only screen and (max-width: 400px) {
+    img {
+    position: absolute;
+    top:7%;
+    left:7%;
+    width: 45px;
+    height: 45px;
+  }
+
+}
+
+/* Tablet Styles */
+@media only screen and (min-width: 401px) and (max-width: 960px) {
+  img {
+    position: absolute;
+    top:7%;
+    left:7%;
+    width: 75px;
+    height: 75px;
+  }
+}
+
+/* Desktop Styles */
+@media only screen and (min-width: 961px) {
+    img {
+    position: absolute;
+    left:7%;
+    top: 7%;
+    width: 100px;
+    height: 100px;
+    margin: auto;
+  }
+}
   
  
