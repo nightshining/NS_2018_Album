@@ -34,15 +34,16 @@
 }
 
   .ui {
-  	/*outline: 1px solid white;*/
   	background-color: black;
-  	color: white;
-  	padding: 5px;
-  	padding-left: 50px;
-  	padding-right: 50px;
-  	margin: 10px;
- 	position: relative;
-  	left: 35%;
+    color: white;
+    padding: 5px;
+    padding-left: 50px;
+    padding-right: 50px;
+    margin: 15px;
+    position:relative;
+    right:25%;
+    left:50%;
+    margin-left:-150px;
   }
   #objectContainer {
   	outline: 1px solid white;
@@ -330,6 +331,19 @@
 			}
 
 		})
+
+		function videoResize() {
+			var w = window.outerWidth;
+		    var h = window.outerHeight;
+		    var vid = "object";
+		    for (var i = 0; i < 3; i++) {
+		    	var canvas = document.getElementById(vid+i);
+		    	var newWidth = w / 3 * 0.75;
+		    	canvas.setAttribute("width", newWidth);
+		    	canvas.setAttribute("height", 400);
+		    }
+		    console.log("Initial Window Size: " + w + " " + h);
+		}
 
 		function updateTime(){
            

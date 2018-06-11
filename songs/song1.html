@@ -62,13 +62,13 @@
   </style> 
 
 </head>
-<body style="text-align:center; background-color:black">
+<body style="text-align:center; background-color:black" onresize="windowResize()">
 <div id="links"><a href="javascript:history.back()"> ¬ Back</a></div>
 
  <!--VIDEO HTML--> 
 	
  	<div id="objectContainer">
-
+ 		
 		<video id="video1" width="640" height="480" style="display: none">
 	        <source src="../assets/videos/song1/moon_loop.mp4" type="video/mp4">
 	    </video>
@@ -76,11 +76,10 @@
 	    <video id="video2" width="640" height="480" style="display: none">
 	        <source src="../assets/videos/song1/Organic_Loop.mp4" type="video/mp4">
 	    </video>
-	 
-		<canvas class="objects" id="object0" width="300" height="400"></canvas>
-		<canvas class="objects" id="object1" width="300" height="400"></canvas>
-		<canvas class="objects" id="object2" width="300" height="400"></canvas>
 
+		<canvas class="objects" id="object0" width="300" height="300"></canvas>
+		<canvas class="objects" id="object1" width="300" height="300"></canvas>
+		<canvas class="objects" id="object2" width="300" height="300"></canvas>
 	</div>
 
 
@@ -157,6 +156,8 @@
 	window.onload = function() {
 
 		//VIDEO//
+
+		videoResize();
 
 		seriously = new Seriously();
 		source.push(new SeriouslySource());
@@ -336,6 +337,25 @@
 			}
 
 		})
+
+		function windowResize() {
+		   	var w = window.outerWidth;
+		    var h = window.outerHeight;
+		    //console.log("Initial Window Size: " + w + " " + h);
+		}
+
+		function videoResize() {
+			var w = window.outerWidth;
+		    var h = window.outerHeight;
+		    var vid = "object";
+		    for (var i = 0; i < 3; i++) {
+		    	var canvas = document.getElementById(vid+i);
+		    	var newWidth = w / 3 * 0.75;
+		    	canvas.setAttribute("width", newWidth);
+		    	canvas.setAttribute("height", 400);
+		    }
+		    console.log("Initial Window Size: " + w + " " + h);
+		}
 
 		function updateTime(){
            
