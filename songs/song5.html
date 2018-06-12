@@ -53,8 +53,8 @@
 	/*outline:1px solid red;*/
   }
   #object1 {
-  	margin-left: 50px;
-  	margin-right: 50px;
+  	margin-left: 5px;
+  	margin-right: 5px;
   }
 
 
@@ -155,7 +155,7 @@
 	window.onload = function() {
 
 		//VIDEO//
-
+		videoResize();
 		seriously = new Seriously();
 		source.push(new SeriouslySource());
 		source.push(new SeriouslySource());
@@ -340,7 +340,7 @@
 		    	var canvas = document.getElementById(vid+i);
 		    	var newWidth = w / 3 * 0.75;
 		    	canvas.setAttribute("width", newWidth);
-		    	canvas.setAttribute("height", 400);
+		    	canvas.setAttribute("height", newWidth);
 		    }
 		    console.log("Initial Window Size: " + w + " " + h);
 		}

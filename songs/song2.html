@@ -54,8 +54,8 @@
 	/*outline:1px solid red;*/
   }
   #object1 {
-  	margin-left: 50px;
-  	margin-right: 50px;
+  	margin-left: 5px;
+  	margin-right: 5px;
   }
 
 
@@ -337,7 +337,7 @@
 
 		})
 
-		function videoResize() {
+			function videoResize() {
 			var w = window.outerWidth;
 		    var h = window.outerHeight;
 		    var vid = "object";
@@ -345,7 +345,7 @@
 		    	var canvas = document.getElementById(vid+i);
 		    	var newWidth = w / 3 * 0.75;
 		    	canvas.setAttribute("width", newWidth);
-		    	canvas.setAttribute("height", 400);
+		    	canvas.setAttribute("height", newWidth);
 		    }
 		    console.log("Initial Window Size: " + w + " " + h);
 		}
@@ -362,7 +362,6 @@
            		source[2].setExposure(0,e);
 
            		let center = tracks[2].getMeter() * 3.0;
-           		source[1].setRGB(2, center);
 
 
 				let d = Nexus.scale(tracks[2].getMeter(),0.0,1.0,0.0,0.3);
