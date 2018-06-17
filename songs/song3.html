@@ -140,6 +140,7 @@
 
 	//LOGIC//
 
+	var bStartTracks = true;
 	var loop;
 	var control = [];
 
@@ -153,9 +154,6 @@
 
 
 	window.onload = function() {
- 		
- 		context = new AudioContext();
-		StartAudioContext(Tone.context, "#startbutton");
 		
 		//VIDEO//
 		videoResize();
@@ -187,6 +185,8 @@
 		seriously.go();
 
 		// AUDIO //
+
+		StartAudioContext(Tone.context)
 
 		var totalDrumClips = 4;
 		tracks.push(new ToneTrack(totalDrumClips, song + '/drum/'));
@@ -266,14 +266,27 @@
 
 
 		startbutton.on('change',function(v) {
-		
-		// TONE GLOBAL //
+			
+			if (bStartTracks) {
 
-		Tone.Transport.bpm.value = songTempo;
-		Tone.Transport.start();
-		Tone.Master.volume.value = 0;
+				Tone.context.latencyHint = "balanced";
+		        Tone.context.resume();
 
-		reset();
+				for (var i = 0; i < tracks.length; i++) {
+					tracks[i].startTrack();
+				}
+				
+				bStartTracks = false;
+
+				Tone.Transport.bpm.value = songTempo;
+				Tone.Transport.start();
+				Tone.Master.volume.value = 0;
+
+				console.log('Initialize Audio Engine!')
+			}
+			
+			reset();
+
 
 		// VIDEO //
 			document.getElementById('video1').play();
