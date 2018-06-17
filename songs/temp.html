@@ -69,7 +69,7 @@
 <div id="links"><a href="javascript:history.back()"> ¬ Back</a></div>
 
  <!--VIDEO HTML--> 
-	
+<!--
  	<div id="objectContainer">
  		
 		<video id="video1" width="640" height="480" style="display: none" playsinline>
@@ -84,10 +84,10 @@
 		<canvas class="objects" id="object1" width="300" height="300"></canvas>
 		<canvas class="objects" id="object2" width="300" height="300"></canvas>
 	</div>
-
+-->
 
 	<!--<canvas id="main" width="1024" height="720" style="display: none"></canvas>-->
-	<script src="../lib/seriously.js"></script>
+<!--	<script src="../lib/seriously.js"></script>
 
     <script src="../lib/effects/seriously.blur.js"></script>
     <script src="../lib/effects/seriously.chromatic.js"></script>
@@ -103,7 +103,7 @@
     <script src="../lib/effects/seriously.ripple.js"></script>
 	<script src="../lib/effects/seriously.tvglitch.js"></script>
 
-
+-->
  	<!--AUDIO HTML--> 
 
 	<div class="ui" id="multislider"></div>
@@ -118,13 +118,13 @@
 	<script language="javascript" type="text/javascript" src="../lib/NexusUI.min.js"></script>
 	<script language="javascript" type="text/javascript" src="../lib/StartAudioContext.js"></script>
 	<script language="javascript" type="text/javascript" src="../scripts/toneTrack.js"></script>
-	<script language="javascript" type="text/javascript" src="../scripts/seriouslyVid.js"></script>
+	<!--<script language="javascript" type="text/javascript" src="../scripts/seriouslyVid.js"></script>-->
   	<script language="javascript" type="text/javascript">
 
   	//VIDEO//
 
-  	var seriously;
-  	var source = [];
+  	// var seriously;
+  	// var source = [];
 
 
 	//GLOBAL//
@@ -144,7 +144,8 @@
 	var slider;
 
 	//LOGIC//
-
+	
+	var bStartTracks = true;
 	var loop;
 	var control = [];
 
@@ -163,31 +164,33 @@
 
 		//videoResize();
 
-		seriously = new Seriously();
-		source.push(new SeriouslySource());
-		source.push(new SeriouslySource());
-		source.push(new SeriouslySource());
+		// seriously = new Seriously();
+		// source.push(new SeriouslySource());
+		// source.push(new SeriouslySource());
+		// source.push(new SeriouslySource());
 
-		for (var i = 0; i < source.length; i++) {
-			source[i].addEffect('exposure'); //fx index 0
-			source[i].addEffect('chromatic'); // fx index 1
-			//source[i].addEffect('mirror'); //fx index 2
-		}
+		// for (var i = 0; i < source.length; i++) {
+		// 	source[i].addEffect('exposure'); //fx index 0
+		// 	source[i].addEffect('chromatic'); // fx index 1
+		// 	//source[i].addEffect('mirror'); //fx index 2
+		// }
 
-		for (var j = 0; j < source.length; j++) {
-			let index = j;
-			let vIndex = 1;
+		// for (var j = 0; j < source.length; j++) {
+		// 	let index = j;
+		// 	let vIndex = 1;
 			
-			if(index == 1) {
+		// 	if(index == 1) {
 				
-				vIndex = 2;
-			}
-			source[index].init('#object' + index, '#video' + vIndex);
-		}
+		// 		vIndex = 2;
+		// 	}
+		// 	source[index].init('#object' + index, '#video' + vIndex);
+		// }
 		
-		seriously.go();
+		// seriously.go();
 
 		// AUDIO //
+
+		StartAudioContext(Tone.context)
 
 		var totalDrumClips = 4;
 		tracks.push(new ToneTrack(totalDrumClips, song + '/drum/'));
@@ -265,22 +268,35 @@
 
 
 		startbutton.on('change',function(v) {
-		
-		// TONE GLOBAL //
-
-		Tone.Transport.bpm.value = songTempo;
-		Tone.Transport.start();
-		Tone.Master.volume.value = 0;
+	
 
 		// AUDIO //
+
+		if (bStartTracks) {
+
+			Tone.context.latencyHint = "balanced";
+	        Tone.context.resume();
+
+			for (var i = 0; i < tracks.length; i++) {
+				tracks[i].startTrack();
+			}
+			
+			bStartTracks = false;
+
+			Tone.Transport.bpm.value = songTempo;
+			Tone.Transport.start();
+			Tone.Master.volume.value = 0;
+
+			console.log('Initialize Audio Engine!')
+		}
 		reset();
 
 
 		// VIDEO //
-			document.getElementById('video1').play();
-	    	document.getElementById('video1').loop = true;
-	    	document.getElementById('video2').play();
-	    	document.getElementById('video2').loop = true;
+			// document.getElementById('video1').play();
+	  //   	document.getElementById('video1').loop = true;
+	  //   	document.getElementById('video2').play();
+	  //   	document.getElementById('video2').loop = true;
 			
 		})
 
@@ -338,7 +354,7 @@
 			}
 			
 			if(keyName=='s'){
-				tracks[0].setClip(1);
+
 			}
 
 		})
@@ -350,16 +366,16 @@
 		}
 
 		function videoResize() {
-			var w = window.outerWidth;
-		    var h = window.outerHeight;
-		    var vid = "object";
-		    for (var i = 0; i < 3; i++) {
-		    	var canvas = document.getElementById(vid+i);
-		    	var newWidth = w / 3 * 0.75;
-		    	canvas.setAttribute("width", newWidth);
-		    	canvas.setAttribute("height", newWidth);
-		    }
-		    console.log("Initial Window Size: " + w + " " + h);
+			// var w = window.outerWidth;
+		 //    var h = window.outerHeight;
+		 //    var vid = "object";
+		 //    for (var i = 0; i < 3; i++) {
+		 //    	var canvas = document.getElementById(vid+i);
+		 //    	var newWidth = w / 3 * 0.75;
+		 //    	canvas.setAttribute("width", newWidth);
+		 //    	canvas.setAttribute("height", newWidth);
+		 //    }
+		 //    console.log("Initial Window Size: " + w + " " + h);
 		}
 
 		function updateTime(){
@@ -368,21 +384,21 @@
          
          // VIDEO CONTROL //
 
-         	if (tracks[0] != null) {
-           		let e = Nexus.scale(tracks[0].getMeter(),0.0,1.0,-10,8);
-           		source[0].setExposure(0,e);
+   //       	if (tracks[0] != null) {
+   //         		let e = Nexus.scale(tracks[0].getMeter(),0.0,1.0,-10,8);
+   //         		source[0].setExposure(0,e);
 
-           		source[2].setExposure(0,e);
-				source[2].setDist(1,tracks[2].getMeter());
+   //         		source[2].setExposure(0,e);
+			// 	source[2].setDist(1,tracks[2].getMeter());
 
-				let bassGain = Nexus.scale(tracks[1].getMeter(),0.0,1.0,-8,8);
-				source[1].setExposure(0,bassGain);
+			// 	let bassGain = Nexus.scale(tracks[1].getMeter(),0.0,1.0,-8,8);
+			// 	source[1].setExposure(0,bassGain);
 
-				let vidIndex = 1;
-				let effectsIndex = 1;
-				source[vidIndex].setRGB(effectsIndex, tracks[2].getMeter()*10.0);
+			// 	let vidIndex = 1;
+			// 	let effectsIndex = 1;
+			// 	source[vidIndex].setRGB(effectsIndex, tracks[2].getMeter()*10.0);
 
-			}
+			// }
 			
 
 			
@@ -399,7 +415,6 @@
 					if (i == 0) {
 						control[i].pan = 0;
 					}
-
 						tracks[i].setPan(control[i].pan);
 						tracks[i].setFilter(control[i].freq, 0.3);
 
@@ -412,14 +427,7 @@
 
 		loop = new Tone.Loop(function(time){
 
-
-
 			reset();
-
-
-			// let rTrack = Nexus.ri(tracks.length);
-			// let rSolo = Nexus.ri(0,2);
-			// tracks[rTrack].setSolo(rSolo);
 
 		}, "4m").start();
 

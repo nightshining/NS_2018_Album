@@ -22,7 +22,7 @@
                 this.clipTags[i] = 'clip' + i;
                 this.player.add(this.clipTags[i], this.clipPaths[i]);
                 this.player.get(this.clipTags[i]).chain(this.filter, this.fader, this.solo, this.meter, Tone.Master);//removing filter cuts delay
-                this.player.get(this.clipTags[i]).sync().start(0); //sync all loops
+                //this.player.get(this.clipTags[i]).sync().start(0); //NOTE: broke out own function
 
                 this.player.get(this.clipTags[i]).loop = true;
                 this.player.get(this.clipTags[i]).fadeOut = '32n';
@@ -30,11 +30,19 @@
                 //this.player.get(this.clipTags[i]).loopEnd = this.loopEnd; 
                 this.player.get(this.clipTags[i]).mute = true; //mute all clips
             }
-
+            
         }
 
     ToneTrack.prototype.connectEffect = function(effect, auxVol){
-        this.player.send(effect, auxVol);
+        //this.player.send(effect, auxVol);
+    }
+
+    ToneTrack.prototype.startTrack = function() {
+        
+        for (var i = 0; i < this.totalClips; i++) {
+
+            this.player.get(this.clipTags[i]).sync().start(0); //sync all loops
+        }
     }
 
     ToneTrack.prototype.setVol = function(db) {
@@ -45,14 +53,22 @@
         this.pansignal.rampTo(lr,1);
         this.fader.pan.value = this.pansignal.value;
     }
+    
+    ToneTrack.prototype.setFilter = function(freq, res){
+        this.filter.dampening.rampTo(freq, 0.5); //50-10k
+        this.filter.resonance.rampTo(res, 0.5); //0.0-1.0
+    }
+
     ToneTrack.prototype.setSolo = function(toggle) {
         this.solo.solo = toggle;
     }
+
     ToneTrack.prototype.setClipLength = function(clipIndex, _loopEnd) {
         var tag = 'clip';
         this.player.get(tag + clipIndex).loopEnd = _loopEnd;
 
     }
+
     ToneTrack.prototype.setClip = function(clipIndex) {
         var tag = 'clip';
         this.player.get(this.initialClip).mute = true // mute last clip 
@@ -60,11 +76,6 @@
         this.player.get(tag + clipIndex).loop = true;
         //this.player.get(tag + clipIndex).loopEnd = this.loopEnd;
         this.initialClip = tag + clipIndex; // store new clip0
-    }
-
-    ToneTrack.prototype.setFilter = function(freq, res){
-        this.filter.dampening.rampTo(freq, 0.5); //50-10k
-        this.filter.resonance.rampTo(res, 0.5); //0.0-1.0
     }
 
     ToneTrack.prototype.getMeter = function(){
