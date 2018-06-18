@@ -9,6 +9,7 @@
             this.filter = new Tone.LowpassCombFilter();
             this.solo = new Tone.Solo();
             this.fader = new Tone.PanVol();
+            this.volsignal = new Tone.Signal(0);
             this.pansignal = new Tone.Signal(0);
             this.player = new Tone.Players({
                 'url' : '../assets/samples/' + pathVoice + 'sound0.mp3'
@@ -30,11 +31,11 @@
                 //this.player.get(this.clipTags[i]).loopEnd = this.loopEnd; 
                 this.player.get(this.clipTags[i]).mute = true; //mute all clips
             }
-            
+
         }
 
     ToneTrack.prototype.connectEffect = function(effect, auxVol){
-        //this.player.send(effect, auxVol);
+        this.player.send(effect, auxVol);
     }
 
     ToneTrack.prototype.startTrack = function() {
@@ -46,7 +47,8 @@
     }
 
     ToneTrack.prototype.setVol = function(db) {
-        this.fader.volume.rampTo(db,1);
+        this.volsignal.rampTo(db,1);
+        this.fader.volume.value = this.volsignal.value;
     }
 
     ToneTrack.prototype.setPan = function(lr) {
@@ -57,6 +59,7 @@
     ToneTrack.prototype.setFilter = function(freq, res){
         this.filter.dampening.rampTo(freq, 0.5); //50-10k
         this.filter.resonance.rampTo(res, 0.5); //0.0-1.0
+       
     }
 
     ToneTrack.prototype.setSolo = function(toggle) {
