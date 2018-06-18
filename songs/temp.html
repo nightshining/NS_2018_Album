@@ -11,7 +11,7 @@
   <style>
 
   body { padding: 20px; margin: 0; } 
-
+ 
   html *
 		{
 		   font-size: 1em;
@@ -53,7 +53,9 @@
   	padding: 5px;
   }
   .objects {
-	/*outline:1px solid red;*/
+	outline:1px solid red;
+	width: calc(100% / 3 * 0.75);
+  	height: calc(100%);
   }
  #object1 {
   	margin-left: 5px;
@@ -69,7 +71,7 @@
 <div id="links"><a href="javascript:history.back()"> ¬ Back</a></div>
 
  <!--VIDEO HTML--> 
-<!--
+
  	<div id="objectContainer">
  		
 		<video id="video1" width="640" height="480" style="display: none" playsinline>
@@ -80,14 +82,14 @@
 	        <source src="../assets/videos/song1/Organic_Loop.mp4" type="video/mp4">
 	    </video>
 
-		<canvas class="objects" id="object0" width="300" height="300"></canvas>
-		<canvas class="objects" id="object1" width="300" height="300"></canvas>
-		<canvas class="objects" id="object2" width="300" height="300"></canvas>
+		<canvas class="objects" id="object0" width="300" height="350"></canvas>
+		<canvas class="objects" id="object1" width="300" height="350"></canvas>
+		<canvas class="objects" id="object2" width="300" height="350"></canvas>
 	</div>
--->
+
 
 	<!--<canvas id="main" width="1024" height="720" style="display: none"></canvas>-->
-<!--	<script src="../lib/seriously.js"></script>
+	<script src="../lib/seriously.js"></script>
 
     <script src="../lib/effects/seriously.blur.js"></script>
     <script src="../lib/effects/seriously.chromatic.js"></script>
@@ -103,7 +105,7 @@
     <script src="../lib/effects/seriously.ripple.js"></script>
 	<script src="../lib/effects/seriously.tvglitch.js"></script>
 
--->
+
  	<!--AUDIO HTML--> 
 
 	<div class="ui" id="multislider"></div>
@@ -118,13 +120,13 @@
 	<script language="javascript" type="text/javascript" src="../lib/NexusUI.min.js"></script>
 	<script language="javascript" type="text/javascript" src="../lib/StartAudioContext.js"></script>
 	<script language="javascript" type="text/javascript" src="../scripts/toneTrack.js"></script>
-	<!--<script language="javascript" type="text/javascript" src="../scripts/seriouslyVid.js"></script>-->
+	<script language="javascript" type="text/javascript" src="../scripts/seriouslyVid.js"></script>
   	<script language="javascript" type="text/javascript">
 
   	//VIDEO//
 
-  	// var seriously;
-  	// var source = [];
+  	var seriously;
+  	var source = [];
 
 
 	//GLOBAL//
@@ -162,31 +164,30 @@
 
 		//VIDEO//
 
-		//videoResize();
+		seriously = new Seriously();
+		source.push(new SeriouslySource());
+		source.push(new SeriouslySource());
+		source.push(new SeriouslySource());
 
-		// seriously = new Seriously();
-		// source.push(new SeriouslySource());
-		// source.push(new SeriouslySource());
-		// source.push(new SeriouslySource());
+		for (var i = 0; i < source.length; i++) {
+			source[i].addEffect('exposure'); //fx index 0
+			source[i].addEffect('chromatic'); // fx index 1
+			//source[i].addEffect('mirror'); //fx index 2
+		}
 
-		// for (var i = 0; i < source.length; i++) {
-		// 	source[i].addEffect('exposure'); //fx index 0
-		// 	source[i].addEffect('chromatic'); // fx index 1
-		// 	//source[i].addEffect('mirror'); //fx index 2
-		// }
-
-		// for (var j = 0; j < source.length; j++) {
-		// 	let index = j;
-		// 	let vIndex = 1;
+		for (var j = 0; j < source.length; j++) {
+			let index = j;
+			let vIndex = 1;
 			
-		// 	if(index == 1) {
+			if(index == 1) {
 				
-		// 		vIndex = 2;
-		// 	}
-		// 	source[index].init('#object' + index, '#video' + vIndex);
-		// }
+				vIndex = 2;
+			}
+			source[index].init('#object' + index, '#video' + vIndex);
+		}
 		
-		// seriously.go();
+		seriously.go();
+
 
 		// AUDIO //
 
@@ -294,10 +295,11 @@
 
 
 		// VIDEO //
-			// document.getElementById('video1').play();
-	  //   	document.getElementById('video1').loop = true;
-	  //   	document.getElementById('video2').play();
-	  //   	document.getElementById('video2').loop = true;
+			document.getElementById('video1').play();
+	    	document.getElementById('video1').loop = true;
+	    	document.getElementById('video2').play();
+	    	document.getElementById('video2').loop = true;
+
 			
 		})
 
@@ -385,21 +387,21 @@
          
          // VIDEO CONTROL //
 
-   //       	if (tracks[0] != null) {
-   //         		let e = Nexus.scale(tracks[0].getMeter(),0.0,1.0,-10,8);
-   //         		source[0].setExposure(0,e);
+         	if (tracks[0] != null) {
+           		let e = Nexus.scale(tracks[0].getMeter(),0.0,1.0,-10,8);
+           		source[0].setExposure(0,e);
 
-   //         		source[2].setExposure(0,e);
-			// 	source[2].setDist(1,tracks[2].getMeter());
+           		source[2].setExposure(0,e);
+				source[2].setDist(1,tracks[2].getMeter());
 
-			// 	let bassGain = Nexus.scale(tracks[1].getMeter(),0.0,1.0,-8,8);
-			// 	source[1].setExposure(0,bassGain);
+				let bassGain = Nexus.scale(tracks[1].getMeter(),0.0,1.0,-8,8);
+				source[1].setExposure(0,bassGain);
 
-			// 	let vidIndex = 1;
-			// 	let effectsIndex = 1;
-			// 	source[vidIndex].setRGB(effectsIndex, tracks[2].getMeter()*10.0);
+				let vidIndex = 1;
+				let effectsIndex = 1;
+				source[vidIndex].setRGB(effectsIndex, tracks[2].getMeter()*10.0);
 
-			// }
+			}
 			
 
 			

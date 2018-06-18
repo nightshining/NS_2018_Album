@@ -50,8 +50,10 @@
   	outline: 1px solid white;
   	padding: 5px;
   }
-  .objects {
-	/*outline:1px solid red;*/
+ .objects {
+	outline:1px solid red;
+	width: calc(100% / 3 * 0.75);
+  	height: calc(100%);
   }
   #object1 {
   	margin-left: 5px;
@@ -119,8 +121,6 @@
   	<script language="javascript" type="text/javascript">
 
   	//VIDEO//
-
-  	videoResize();
 
   	var seriously;
   	var source = [];
@@ -355,16 +355,16 @@
 		})
 
 			function videoResize() {
-			var w = window.outerWidth;
-		    var h = window.outerHeight;
-		    var vid = "object";
-		    for (var i = 0; i < 3; i++) {
-		    	var canvas = document.getElementById(vid+i);
-		    	var newWidth = w / 3 * 0.75;
-		    	canvas.setAttribute("width", newWidth);
-		    	canvas.setAttribute("height", newWidth);
-		    }
-		    console.log("Initial Window Size: " + w + " " + h);
+			// var w = window.outerWidth;
+		 //    var h = window.outerHeight;
+		 //    var vid = "object";
+		 //    for (var i = 0; i < 3; i++) {
+		 //    	var canvas = document.getElementById(vid+i);
+		 //    	var newWidth = w / 3 * 0.75;
+		 //    	canvas.setAttribute("width", newWidth);
+		 //    	canvas.setAttribute("height", newWidth);
+		 //    }
+		 //    console.log("Initial Window Size: " + w + " " + h);
 		}
 
 		function updateTime(){
